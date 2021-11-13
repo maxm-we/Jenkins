@@ -8,7 +8,8 @@ pipeline {
     stage('Generate clients.json') {
       steps {
         //sh 'ansible-galaxy collection install -r requirements.yml'
-        sh 'touch clients.json'
+        //sh 'touch clients.json'
+        sh 'python3 boto3/client_accounts.py > clients.json'
       }
     }
   }
