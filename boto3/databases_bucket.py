@@ -34,32 +34,35 @@ def assumed_role_session(role_arn: str, base_session: botocore.session.Session =
     return boto3.Session(botocore_session = botocore_session)
 
 #session = assumed_role_session('arn:aws:iam::ACCOUNTID:role/ROLE_NAME')
-session = assumed_role_session('arn:aws:iam::'+ account + ':role/' + client)
+try:
+    session = assumed_role_session('arn:aws:iam::'+ account + ':role/' + client)
 
 
-s3 = session.client('s3')
-response = s3.list_buckets()
+    s3 = session.client('s3')
+    response = s3.list_buckets()
 
-exclude_buckets = ['waf', 'internal', 'awsconfig', 'datadog', 'cf-templates', 'we-dms', '-dr', '-west-', 'terraform', '-lambda', '-west', '-sql-backups', '-creation-stack']
+    exclude_buckets = ['waf', 'internal', 'awsconfig', 'datadog', 'cf-templates', 'we-dms', '-dr', '-west-', 'terraform', '-lambda', '-west', '-sql-backups', '-creation-stack']
 
-use_buckets = []
-databases = []
+    use_buckets = []
+    databases = []
 
-for bucket in response['Buckets']:
-    if not any(bs in bucket["Name"] for bs in exclude_buckets):
-        use_buckets.append(bucket["Name"])
+    for bucket in response['Buckets']:
+        if not any(bs in bucket["Name"] for bs in exclude_buckets):
+            use_buckets.append(bucket["Name"])
 
-for use_bucket in use_buckets:
-    response = s3.list_objects_v2(Bucket=use_bucket, Delimiter = '/', Prefix = 'SQLBackups/')
-    try:
-        for prefix in response['CommonPrefixes']:
-            if 'cs-Audit' not in prefix['Prefix'][:-1] and 'cs-cognos11' not in prefix['Prefix'][:-1] and 'dba_utils' not in prefix['Prefix'][:-1] and 'master' not in prefix['Prefix'][:-1] and 'master_seed' not in prefix['Prefix'][:-1]:
-                databases.append(prefix['Prefix'][:-1].replace('SQLBackups/', ''))
-                backup_bucket = use_bucket
-    except: 
-        pass
-    
-if databases:
-    json = json.dumps({"databases": databases, "bucket": backup_bucket })
-    print(json)
+    for use_bucket in use_buckets:
+        response = s3.list_objects_v2(Bucket=use_bucket, Delimiter = '/', Prefix = 'SQLBackups/')
+        try:
+            for prefix in response['CommonPrefixes']:
+                if 'cs-Audit' not in prefix['Prefix'][:-1] and 'cs-cognos11' not in prefix['Prefix'][:-1] and 'dba_utils' not in prefix['Prefix'][:-1] and 'master' not in prefix['Prefix'][:-1] and 'master_seed' not in prefix['Prefix'][:-1]:
+                    databases.append(prefix['Prefix'][:-1].replace('SQLBackups/', ''))
+                    backup_bucket = use_bucket
+        except: 
+            pass
+        
+    if databases:
+        json = json.dumps({"databases": databases, "bucket": backup_bucket })
+        print(json)
+except:
+    pass
 

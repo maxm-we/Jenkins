@@ -5,8 +5,8 @@ node {
     
     sh "pwd"
     dir("${WORKSPACE}/../../../black_sun") {
-       //accounts = readJSON file: 'accounts.json'
-       accounts = readJSON file: 'clients.json'
+       //accounts = readJSON file: 'clients.json'
+       accounts = readJSON file: 'accounts.json'
     }
 
     //def clientFile = new File("${WORKSPACE}/../../../black_sun/accounts.json")
@@ -17,15 +17,15 @@ node {
         sh "pwd"
         //sh "python3 boto3/client_accounts.py > clients_full.json"
         //sh "python3 boto3/client_accounts-name-only.py > clients.json"
-        // for(account in accounts) {
-        //     sh "python3 boto3/databases_bucket.py -c ${account.name} -a ${account.account_id} > ${WORKSPACE}/../../../black_sun/clients/${account.name}.json"
-        //     sh "python3 boto3/databases_bucket.py -c ${account.name} -a ${account.account_id} > ${WORKSPACE}/../../../black_sun/clients/${account.name}.json"
-        // }
-        accounts.each {
-            sh "pwd"
-            sh "python3 boto3/databases_bucket.py -c ${it.value} -a ${it.key} > ${WORKSPACE}/../../../black_sun/clients/${it.value}.json"
-            println it.value
+        for(account in accounts) {
+            sh "python3 boto3/databases_bucket.py -c ${account.name} -a ${account.account_id} > ${WORKSPACE}/../../../black_sun/clients/${account.name}.json"
+            //sh "python3 boto3/databases_bucket.py -c ${account.name} -a ${account.account_id} > ${WORKSPACE}/../../../black_sun/clients/${account.name}.json"
         }
+        // accounts.each {
+        //     sh "pwd"
+        //     //sh "python3 boto3/databases_bucket.py -c ${it.value} -a ${it.key} > ${WORKSPACE}/../../../black_sun/clients/${it.value}.json"
+        //     println it.value
+        // }
     }
 
     
