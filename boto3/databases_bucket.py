@@ -35,7 +35,8 @@ def assumed_role_session(role_arn: str, base_session: botocore.session.Session =
 
 #session = assumed_role_session('arn:aws:iam::ACCOUNTID:role/ROLE_NAME')
 try:
-    session = assumed_role_session('arn:aws:iam::'+ account + ':role/' + client)
+    #session = assumed_role_session('arn:aws:iam::'+ account + ':role/' + client)
+    session = assumed_role_session('arn:aws:iam::'+ account + ':role/s3-cross-account')
 
 
     s3 = session.client('s3')
@@ -63,6 +64,7 @@ try:
     if databases:
         json = json.dumps({"databases": databases, "bucket": backup_bucket })
         print(json)
-except:
-    pass
+except Exception as e:
+    print(f"{type(e).__name__} at line {e.__traceback__.tb_lineno} of {__file__}: {e}")
+    
 
