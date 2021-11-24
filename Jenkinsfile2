@@ -19,7 +19,8 @@ node {
         
         accounts.each {
             sh "pwd"
-            sh "python3 boto3/databases_bucket.py -c ${it.value} -a ${it.key} > ${WORKSPACE}/../../../black_sun/clients/${it.value}.json"
+            //sh "python3 boto3/databases_bucket.py -c ${it.value} -a ${it.key} > ${WORKSPACE}/../../../black_sun/clients/${it.value}.json"
+            println it.value
         }
     }
 
