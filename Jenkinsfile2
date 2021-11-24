@@ -8,7 +8,7 @@ node {
         sh "pwd"
         sh "python3 boto3/client_accounts.py > clients_full.json"
         sh "python3 boto3/client_accounts-name-only.py > clients.json"
-        def clientFile = new File("clients_full.json")
+        def clientFile = new File("../${job}@script"/clients_full.json")
         def clientJSON = new JsonSlurper().parseText(clientFile.text)
     
         clientJSON.each {
