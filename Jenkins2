@@ -1,0 +1,14 @@
+import groovy.json.JsonSlurper
+
+node {
+    sh "python3 boto3/client_accounts.py > ${WORKSPACE}/clients_full.json"
+    sh "python3 boto3/client_accounts-name-only.py > ${WORKSPACE}/clients_full.json"
+
+    def clientFile = new File("clients_full.json")
+    def clientJSON = new JsonSlurper().parseText(clientFile.text)
+
+    clientJSON.each {
+        sh "python3 boto3/databases_bucket.py -c ${it.value} -a ${it.key} > ${WORKSPACE}/../../../black_sun/clients/${it.value}.json"
+    }
+    
+}
