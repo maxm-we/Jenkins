@@ -6,8 +6,8 @@ node {
     def job = JOB_NAME.split('/')[1]
     dir("../${job}@script/boto3") {
         sh "pwd"
-        sh "python3 boto3/client_accounts.py > ${WORKSPACE}/clients_full.json"
-        sh "python3 boto3/client_accounts-name-only.py > ${WORKSPACE}/clients_full.json"
+        sh "python3 boto3/client_accounts.py > clients_full.json"
+        sh "python3 boto3/client_accounts-name-only.py > clients_full.json"
     }
     def clientFile = new File("clients_full.json")
     def clientJSON = new JsonSlurper().parseText(clientFile.text)
