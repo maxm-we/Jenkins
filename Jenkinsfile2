@@ -4,8 +4,12 @@ node {
     cleanWs()
     
     sh "pwd"
-    def clientFile = new File("${WORKSPACE}/../../../black_sun/accounts.json")
-    def clientJSON = new JsonSlurper().parseText(clientFile.text)
+    dir("${WORKSPACE}/../../../black_sun") {
+       accounts = readJSON file: 'accounts.json'
+    }
+
+    //def clientFile = new File("${WORKSPACE}/../../../black_sun/accounts.json")
+    //def clientJSON = new JsonSlurper().parseText(clientFile.text)
 
     def job = JOB_NAME.split('/')[1]
     dir("../${job}@script") {
