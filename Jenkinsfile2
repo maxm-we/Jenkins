@@ -1,9 +1,9 @@
 import groovy.json.JsonSlurper
 
 node {
-    sh "pwd"
     cleanWs()
     
+    sh "pwd"
     def clientFile = new File("${WORKSPACE}/../../../black_sun/accounts.json")
     def clientJSON = new JsonSlurper().parseText(clientFile.text)
 
