@@ -12,6 +12,7 @@ node {
         def clientJSON = new JsonSlurper().parseText(clientFile.text)
     
         clientJSON.each {
+            sh "pwd"
             sh "python3 boto3/databases_bucket.py -c ${it.value} -a ${it.key} > ${WORKSPACE}/../../../black_sun/clients/${it.value}.json"
         }
     }
