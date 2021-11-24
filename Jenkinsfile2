@@ -4,7 +4,7 @@ node {
     sh "pwd"
     cleanWs()
     def job = JOB_NAME.split('/')[1]
-    dir("../${job}@script/boto3") {
+    dir("../${job}@script") {
         sh "pwd"
         sh "python3 boto3/client_accounts.py > clients_full.json"
         sh "python3 boto3/client_accounts-name-only.py > clients_full.json"
