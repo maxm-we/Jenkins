@@ -42,7 +42,7 @@ try:
     s3 = session.client('s3')
     response = s3.list_buckets()
 
-    exclude_buckets = ['waf', 'internal', 'awsconfig', 'datadog', 'cf-templates', 'we-dms', '-dr', '-west-', 'terraform', '-lambda', '-west', '-sql-backups', '-creation-stack']
+    exclude_buckets = ['waf', 'internal', 'awsconfig', 'datadog', 'cf-templates', 'we-dms', '-dr', 'terraform', '-lambda', '-sql-backups', '-creation-stack']
 
     use_buckets = []
     databases = []
